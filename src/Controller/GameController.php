@@ -66,6 +66,9 @@ class GameController extends AbstractController
                 $game->setImage($newFilename);
             }
 
+            $game->setCreatedAt(new \DateTimeImmutable());
+            $game->setUpdatedAt(new \DateTimeImmutable());
+
             $entityManager->persist($game);
             $entityManager->flush();
 
@@ -103,6 +106,8 @@ class GameController extends AbstractController
 
                 $game->setImage($newFilename);
             }
+
+            $game->setUpdatedAt(new \DateTimeImmutable());
 
             $entityManager->flush();
 

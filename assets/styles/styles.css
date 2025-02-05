@@ -1,0 +1,5 @@
+.card-img-top {
+    width: 100%;
+    height: 200px; /* Ajustez la hauteur selon vos besoins */
+    object-fit: cover; /* Cette propriété permet de conserver le ratio de l'image tout en remplissant le conteneur */
+}
