@@ -10,26 +10,62 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class GameController extends AbstractController
 {
-    #[Route('/jeu', name: 'game.index')]
-    public function index(GameRepository $repository): Response
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
-        $games = $repository->findAll();
+        $this->tokenStorage = $tokenStorage;
+    }
+
+    #[Route('/jeu', name: 'game.index')]
+    public function index(GameRepository $gameRepository): Response
+    {
+        $token = $this->tokenStorage->getToken();
+        if (!$token || !$token->getUser() || $token->getUser() === 'anon.') {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $games = $gameRepository->findAll();
         return $this->render('game/index.html.twig', [
             'games' => $games,
         ]);
     }
 
     #[Route('/jeu/new', name: 'game.new')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // handle exception if something happens during file upload
+                }
+
+                $game->setImage($newFilename);
+            }
+
             $entityManager->persist($game);
             $entityManager->flush();
 
@@ -41,16 +77,47 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/jeu/{slug}-{id}', name: 'game.show', requirements: ['slug' => '[a-z0-9-]+', 'id' => '\d+'])]
-    public function show(string $slug, int $id, GameRepository $repository): Response
+    #[Route('/jeu/{id}/edit', name: 'game.edit')]
+    public function edit(Request $request, Game $game, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        $game = $repository->find($id);
-        if ($game->getSlug() !== $slug) {
-            return $this->redirectToRoute('game.show', [
-                'id' => $game->getId(),
-                'slug' => $game->getSlug(),
-            ], 301);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(GameType::class, $game);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // handle exception if something happens during file upload
+                }
+
+                $game->setImage($newFilename);
+            }
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('game.index');
         }
+
+        return $this->render('game/edit.html.twig', [
+            'form' => $form->createView(),
+            'game' => $game,
+        ]);
+    }
+
+    #[Route('/jeu/{slug}-{id}', name: 'game.show', requirements: ['slug' => '[a-z0-9-]+', 'id' => '\d+'])]
+    public function show(Game $game): Response
+    {
         return $this->render('game/show.html.twig', [
             'game' => $game,
         ]);
