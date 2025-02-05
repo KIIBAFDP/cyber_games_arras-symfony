@@ -23,6 +23,9 @@ class Recipe
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -73,15 +76,15 @@ class Recipe
         return $this;
     }
 
-    public function getCreatedAT(): ?string
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAT;
+        return $this->createdAt;
     }
-
-    public function setCreatedAT(string $createdAT): static
+    
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->createdAT = $createdAT;
-
+        $this->createdAt = $createdAt;
+    
         return $this;
     }
 
@@ -105,6 +108,18 @@ class Recipe
     public function setDuration(?int $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

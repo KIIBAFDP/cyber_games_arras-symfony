@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-Home
+<div class="d-flex justify-content-center align-items-center flex-grow-1">
+    <div class="card text-center" style="width: 18rem;">
+        <div class="card-body">
+            <h4 class="card-title">Jeux</h4>
+            <p class="card-text">Découvrez les jeux disponibles.</p>
+            <a href="{{ path('recipe.index') }}" class="btn btn-primary">Voir les jeux</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
