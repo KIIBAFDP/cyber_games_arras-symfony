@@ -16,7 +16,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     /**
@@ -75,7 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 

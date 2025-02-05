@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeRepository;
+use App\Repository\GameRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RecipeRepository::class)]
-class Recipe
+#[ORM\Entity(repositoryClass: GameRepository::class)]
+class Game
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,9 +31,6 @@ class Recipe
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $duration = null;
 
     public function getId(): ?int
     {
@@ -76,15 +73,27 @@ class Recipe
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
-    
+
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
@@ -96,30 +105,6 @@ class Recipe
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getDuration(): ?int
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(?int $duration): static
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }
