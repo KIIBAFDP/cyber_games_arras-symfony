@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tournoi: {{ tournament.name }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5 animate__animated animate__fadeIn">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h1 class="mb-0">{{ tournament.name }}</h1>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ tournament.description }}</p>
+            <ul class="list-unstyled">
+                <li><strong>Date:</strong> {{ tournament.date|date('d/m/Y H:i') }}</li>
+                <li><strong>Jeu:</strong> {{ tournament.game.title }}</li>
+                <li><strong>Participants max:</strong> {{ tournament.maxParticipants }}</li>
+            </ul>
+            <div class="mt-4">
+                <a href="{{ path('tournament.index') }}" class="btn btn-secondary">Retour à la liste</a>
+                <a href="{{ path('tournament.register', { id: tournament.id }) }}" class="btn btn-primary">S'inscrire</a>
+                <a href="{{ path('tournament.unregister', { id: tournament.id }) }}" class="btn btn-danger">Se désinscrire</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h2>Participants</h2>
+        <ul class="list-group animate__animated animate__fadeInUp">
+            {% for registration in tournament.registrations %}
+                <li class="list-group-item">{{ registration.pseudo }}</li>
+            {% else %}
+                <li class="list-group-item">Aucun participant pour le moment.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

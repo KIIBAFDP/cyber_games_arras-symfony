@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'inscrire au tournoi{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>S'inscrire au tournoi</h1>
+    {{ form_start(registrationForm) }}
+        <div class="mb-3">
+            {{ form_label(registrationForm.pseudo) }}
+            {{ form_widget(registrationForm.pseudo, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(registrationForm.pseudo) }}
+        </div>
+        <button type="submit" class="btn btn-success">S'inscrire</button>
+    {{ form_end(registrationForm) }}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Tournoi{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Modifier le tournoi</h1>
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.date) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.game) }}
+            {{ form_widget(form.game, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.game) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.maxParticipants) }}
+            {{ form_widget(form.maxParticipants, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.maxParticipants) }}
+        </div>
+        <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

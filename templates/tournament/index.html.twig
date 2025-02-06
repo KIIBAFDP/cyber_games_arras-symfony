@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tournois{% endblock %}
+
+{% block body %}
+<div class="container mt-4 animate__animated animate__fadeIn">
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h1 class="display-4 text-dark">Liste des tournois</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="row mb-4">
+            <div class="col text-center">
+                <a href="{{ path('tournament.new') }}" class="btn btn-success">Créer un tournoi</a>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        {% for tournament in tournaments %}
+            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                <div class="card h-100 shadow-sm animate__animated animate__fadeInUp">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">{{ tournament.name }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ tournament.description }}</p>
+                        <ul class="list-unstyled">
+                            <li><strong>Date:</strong> {{ tournament.date|date('d/m/Y H:i') }}</li>
+                            <li><strong>Jeu:</strong> {{ tournament.game.title }}</li>
+                            <li><strong>Participants max:</strong> {{ tournament.maxParticipants }}</li>
+                        </ul>
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{{ path('tournament.show', {id: tournament.id}) }}" class="btn btn-primary">Voir</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('tournament.edit', {id: tournament.id}) }}" class="btn btn-warning">Modifier</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center animate__animated animate__fadeIn" role="alert">
+                    Aucun tournoi disponible pour le moment.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
