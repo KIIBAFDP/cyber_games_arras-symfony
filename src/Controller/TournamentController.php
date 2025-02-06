@@ -79,13 +79,11 @@ class TournamentController extends AbstractController
             throw $this->createAccessDeniedException('You must be logged in to register for a tournament.');
         }
 
-        // Check if the tournament has reached the maximum number of participants
         if ($tournament->getRegistrations()->count() >= $tournament->getMaxParticipants()) {
             $this->addFlash('error', 'Le nombre maximum de participants a été atteint.');
             return $this->redirectToRoute('tournament.show', ['id' => $tournament->getId()]);
         }
 
-        // New check: ensure the user is not already registered
         $user = $this->getUser();
         $existingRegistration = $entityManager->getRepository(Registration::class)->findOneBy([
             'user' => $user,
