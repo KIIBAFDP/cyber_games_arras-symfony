@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Planifier une nouvelle maintenance{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Planifier une nouvelle maintenance</h1>
+    <div class="card shadow-sm p-4">
+        {{ form_start(maintenanceForm) }}
+            <div class="mb-3">
+                {{ form_label(maintenanceForm.computer, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(maintenanceForm.computer, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(maintenanceForm.computer) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(maintenanceForm.maintenanceDate, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(maintenanceForm.maintenanceDate, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(maintenanceForm.maintenanceDate) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(maintenanceForm.description, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(maintenanceForm.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(maintenanceForm.description) }}
+            </div>
+        {{ form_end(maintenanceForm) }}
+    </div>
+</div>
+{% endblock %}

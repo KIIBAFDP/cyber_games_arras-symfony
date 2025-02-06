@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un ordinateur{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Modifier un ordinateur</h1>
+    <div class="card shadow-sm p-4">
+        {{ form_start(computerForm) }}
+            <div class="mb-3">
+                {{ form_label(computerForm.name, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(computerForm.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(computerForm.name) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(computerForm.processor, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(computerForm.processor, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(computerForm.processor) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(computerForm.memory, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(computerForm.memory, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(computerForm.memory) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(computerForm.os, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(computerForm.os, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(computerForm.os) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(computerForm.installedGames, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(computerForm.installedGames, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(computerForm.installedGames) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(computerForm.purchaseDate, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(computerForm.purchaseDate, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(computerForm.purchaseDate) }}
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+            </div>
+        {{ form_end(computerForm) }}
+    </div>
+</div>
+{% endblock %}

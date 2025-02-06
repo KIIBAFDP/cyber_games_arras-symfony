@@ -1,28 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des ordinateurs{% endblock %}
+{% block title %}Liste des maintenances{% endblock %}
 
 {% block body %}
 <div class="container mt-4">
     <h1 class="mb-4">Maintenances</h1>
+    <!-- Bouton pour planifier une nouvelle maintenance -->
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{{ path('maintenance.new') }}">Planifier une nouvelle maintenance</a>
+    </div>
     <table class="table table-striped table-hover">
         <thead class="thead-dark">
             <tr>
                 <th>Ordinateur</th>
                 <th>Date de maintenance</th>
                 <th>Description</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for maintenance in maintenances %}
-                <tr>
-                    <td>{{ maintenance.computer.name }}</td>
-                    <td>{{ maintenance.maintenanceDate|date('d/m/Y H:i') }}</td>
-                    <td>{{ maintenance.description }}</td>
-                </tr>
+                {% if not maintenance.isCompleted %}
+                    <tr>
+                        <td>{{ maintenance.computer.name }}</td>
+                        <td>{{ maintenance.maintenanceDate|date('d/m/Y H:i') }}</td>
+                        <td>{{ maintenance.description }}</td>
+                        <td>
+                            <form method="post" action="{{ path('maintenance.complete', { id: maintenance.id }) }}" style="display:inline;" onsubmit="return confirm('Confirmer la validation de cette maintenance ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('complete' ~ maintenance.id) }}">
+                                <button class="btn btn-success">Valider</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
-                    <td colspan="3" class="text-center">Aucune maintenance planifiée pour le moment.</td>
+                    <td colspan="4" class="text-center">Aucune maintenance planifiée pour le moment.</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -42,6 +55,7 @@
                 <th>Système d'exploitation</th>
                 <th>Jeux installés</th>
                 <th>Date d'achat</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -62,10 +76,17 @@
                         </details>
                     </td>
                     <td>{{ computer.purchaseDate|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('maintenance.edit', { id: computer.id }) }}" class="btn btn-sm btn-primary">Modifier</a>
+                        <form method="post" action="{{ path('maintenance.delete', { id: computer.id }) }}" style="display:inline;" onsubmit="return confirm('Confirmer la suppression ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ computer.id) }}">
+                            <button class="btn btn-sm btn-danger">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center">Aucun ordinateur disponible pour le moment.</td>
+                    <td colspan="7" class="text-center">Aucun ordinateur disponible pour le moment.</td>
                 </tr>
             {% endfor %}
         </tbody>
