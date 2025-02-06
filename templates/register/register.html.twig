@@ -16,6 +16,11 @@
                             {{ form_errors(registrationForm.email) }}
                         </div>
                         <div class="mb-3">
+                            {{ form_label(registrationForm.pseudo) }}
+                            {{ form_widget(registrationForm.pseudo, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(registrationForm.pseudo) }}
+                        </div>
+                        <div class="mb-3">
                             {{ form_label(registrationForm.plainPassword) }}
                             {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(registrationForm.plainPassword) }}

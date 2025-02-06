@@ -3,7 +3,7 @@
 {% block title %}Jeux{% endblock %}
 
 {% block body %}
-<div class="container mt-4 animate__animated animate__fadeIn">
+<div class="container mt-4">
     <div class="row justify-content-center mb-4">
         <div class="col-md-8">
             <div class="card text-center shadow-sm">
@@ -23,7 +23,7 @@
     <div class="row">
         {% for game in games %}
             <div class="col-md-4 mb-4 d-flex align-items-stretch">
-                <div class="card h-100 shadow-sm animate__animated animate__fadeInUp">
+                <div class="card h-100 shadow-sm">
                     {% if game.image %}
                         <img src="{{ asset('uploads/images/' ~ game.image) }}" class="card-img-top" alt="{{ game.title }}">
                     {% endif %}
@@ -34,6 +34,10 @@
                             <a href="{{ path('game.show', {id: game.id, slug: game.slug}) }}" class="btn btn-primary">Voir</a>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('game.edit', {id: game.id}) }}" class="btn btn-warning">Modifier</a>
+                                <form method="post" action="{{ path('game.delete', {id: game.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce jeu ?');" style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ game.id) }}">
+                                    <button class="btn btn-danger">Supprimer</button>
+                                </form>
                             {% endif %}
                         </div>
                     </div>
@@ -41,7 +45,7 @@
             </div>
         {% else %}
             <div class="col-12">
-                <div class="alert alert-info text-center animate__animated animate__fadeIn" role="alert">
+                <div class="alert alert-info text-center" role="alert">
                     Aucun jeu disponible pour le moment.
                 </div>
             </div>

@@ -127,4 +127,15 @@ class GameController extends AbstractController
             'game' => $game,
         ]);
     }
+
+    #[Route('/jeu/{id}/delete', name: 'game.delete', methods: ['POST'])]
+    public function delete(Game $game, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $entityManager->remove($game);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('game.index');
+    }
 }

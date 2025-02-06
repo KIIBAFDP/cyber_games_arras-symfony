@@ -15,7 +15,7 @@ class RegistrationType extends AbstractType
         $builder
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control', 'readonly' => true],
             ]);
     }
 

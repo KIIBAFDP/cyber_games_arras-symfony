@@ -73,7 +73,7 @@ class TournamentController extends AbstractController
     }
 
     #[Route('/tournament/{id}/register', name: 'tournament.register')]
-    public function register(Request $request, Tournament $tournament, EntityManagerInterface $entityManager): Response
+    public function register(Tournament $tournament, EntityManagerInterface $entityManager): Response
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException('You must be logged in to register for a tournament.');
@@ -97,20 +97,14 @@ class TournamentController extends AbstractController
         $registration = new Registration();
         $registration->setUser($user);
         $registration->setTournament($tournament);
+        $registration->setPseudo($user->getPseudo()); // Assuming getUserIdentifier() is a valid method
 
-        $form = $this->createForm(RegistrationType::class, $registration);
-        $form->handleRequest($request);
+        $entityManager->persist($registration);
+        $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($registration);
-            $entityManager->flush();
+        $this->addFlash('success', 'Vous êtes inscrit au tournoi.');
 
-            return $this->redirectToRoute('tournament.show', ['id' => $tournament->getId()]);
-        }
-
-        return $this->render('registration/registration.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('tournament.show', ['id' => $tournament->getId()]);
     }
 
     #[Route('/tournament/{id}/unregister', name: 'tournament.unregister')]
@@ -135,5 +129,16 @@ class TournamentController extends AbstractController
         }
 
         return $this->redirectToRoute('tournament.show', ['id' => $tournament->getId()]);
+    }
+
+    #[Route('/tournament/{id}/delete', name: 'tournament.delete', methods: ['POST'])]
+    public function delete(Tournament $tournament, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $entityManager->remove($tournament);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tournament.index');
     }
 }

@@ -3,7 +3,7 @@
 {% block title %}Tournois{% endblock %}
 
 {% block body %}
-<div class="container mt-4 animate__animated animate__fadeIn">
+<div class="container mt-4">
     <div class="row justify-content-center mb-4">
         <div class="col-md-8">
             <div class="card text-center shadow-sm">
@@ -23,7 +23,7 @@
     <div class="row">
         {% for tournament in tournaments %}
             <div class="col-md-4 mb-4 d-flex align-items-stretch">
-                <div class="card h-100 shadow-sm animate__animated animate__fadeInUp">
+                <div class="card h-100 shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title mb-0">{{ tournament.name }}</h5>
                     </div>
@@ -38,6 +38,10 @@
                             <a href="{{ path('tournament.show', {id: tournament.id}) }}" class="btn btn-primary">Voir</a>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('tournament.edit', {id: tournament.id}) }}" class="btn btn-warning">Modifier</a>
+                                <form method="post" action="{{ path('tournament.delete', {id: tournament.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce tournoi ?');" style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tournament.id) }}">
+                                    <button class="btn btn-danger">Supprimer</button>
+                                </form>
                             {% endif %}
                         </div>
                     </div>
@@ -45,7 +49,7 @@
             </div>
         {% else %}
             <div class="col-12">
-                <div class="alert alert-info text-center animate__animated animate__fadeIn" role="alert">
+                <div class="alert alert-info text-center" role="alert">
                     Aucun tournoi disponible pour le moment.
                 </div>
             </div>
