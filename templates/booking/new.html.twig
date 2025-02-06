@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Réservation{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Nouvelle Réservation</h1>
+    {{ form_start(bookingForm) }}
+        <div class="mb-3">
+            {{ form_label(bookingForm.startTime) }}
+            {{ form_widget(bookingForm.startTime, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(bookingForm.startTime) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(bookingForm.endTime) }}
+            {{ form_widget(bookingForm.endTime, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(bookingForm.endTime) }}
+        </div>
+        <button type="submit" class="btn btn-success">Réserver</button>
+    {{ form_end(bookingForm) }}
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des ordinateurs{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Maintenances</h1>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Ordinateur</th>
+                <th>Date de maintenance</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for maintenance in maintenances %}
+                <tr>
+                    <td>{{ maintenance.computer.name }}</td>
+                    <td>{{ maintenance.maintenanceDate|date('d/m/Y H:i') }}</td>
+                    <td>{{ maintenance.description }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">Aucune maintenance planifiée pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Liste des ordinateurs</h2>
+    <!-- Bouton pour créer un nouvel ordinateur -->
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{{ path('maintenance.new') }}">Créer un nouvel ordinateur</a>
+    </div>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Processeur</th>
+                <th>Mémoire</th>
+                <th>Système d'exploitation</th>
+                <th>Jeux installés</th>
+                <th>Date d'achat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for computer in computers %}
+                <tr>
+                    <td>{{ computer.name }}</td>
+                    <td>{{ computer.processor }}</td>
+                    <td>{{ computer.memory }}</td>
+                    <td>{{ computer.os }}</td>
+                    <td>
+                        <details>
+                            <summary>Voir les jeux</summary>
+                            <ul>
+                                {% for game in computer.installedGames %}
+                                    <li>{{ game.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    </td>
+                    <td>{{ computer.purchaseDate|date('d/m/Y') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucun ordinateur disponible pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

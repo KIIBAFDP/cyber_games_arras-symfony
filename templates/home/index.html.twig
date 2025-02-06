@@ -23,6 +23,26 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6 mb-4">
+            <div class="card text-center shadow-sm border-warning animate__animated animate__fadeInLeft">
+                <div class="card-body">
+                    <h4 class="card-title text-warning"><i class="fas fa-calendar-alt"></i> Réservations</h4>
+                    <p class="card-text">Réservez un ordinateur pour jouer.</p>
+                    <a href="{{ path('booking.index') }}" class="btn btn-warning">Voir les réservations</a>
+                </div>
+            </div>
+        </div>
+        {% if app.user and is_granted('ROLE_ADMIN') %}
+        <div class="col-md-6 mb-4">
+            <div class="card text-center shadow-sm border-danger animate__animated animate__fadeInRight">
+                <div class="card-body">
+                    <h4 class="card-title text-danger"><i class="fas fa-tools"></i> Maintenances</h4>
+                    <p class="card-text">Planifiez et suivez les maintenances des ordinateurs.</p>
+                    <a href="{{ path('maintenance.index') }}" class="btn btn-danger">Voir les maintenances</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
