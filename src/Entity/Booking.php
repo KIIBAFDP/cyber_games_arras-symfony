@@ -27,11 +27,13 @@ class Booking
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $endTime = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $forfait = null;
+
     // Add the setComputer method
     public function setComputer(Computer $computer): self
     {
         $this->computer = $computer;
-
         return $this;
     }
 
@@ -45,7 +47,6 @@ class Booking
     public function setUser(User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -55,5 +56,42 @@ class Booking
         return $this->user;
     }
 
-    // Getters and setters for other properties...
+    // Add the setStartTime method
+    public function setStartTime(\DateTimeInterface $startTime): self
+    {
+        $this->startTime = $startTime;
+        return $this;
+    }
+
+    // Add the getStartTime method
+    public function getStartTime(): ?\DateTimeInterface
+    {
+        return $this->startTime;
+    }
+
+    // Add the setEndTime method
+    public function setEndTime(\DateTimeInterface $endTime): self
+    {
+        $this->endTime = $endTime;
+        return $this;
+    }
+
+    // Add the getEndTime method
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->endTime;
+    }
+
+    // Add the setForfait method
+    public function setForfait(string $forfait): self
+    {
+        $this->forfait = $forfait;
+        return $this;
+    }
+
+    // Add the getForfait method
+    public function getForfait(): ?string
+    {
+        return $this->forfait;
+    }
 }

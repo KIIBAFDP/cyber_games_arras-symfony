@@ -4,10 +4,13 @@ namespace App\Form;
 
 use App\Entity\Booking;
 use Symfony\Component\Form\AbstractType;
+use App\Entity\Computer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class BookingType extends AbstractType
 {
@@ -22,6 +25,11 @@ class BookingType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Heure de fin',
             ])
+            ->add('forfait', ChoiceType::class, [
+                'label' => 'Forfait',
+                'choices' => $options['forfait_options'],
+                'placeholder' => 'Choisissez un forfait'
+            ])
             ->add('save', SubmitType::class, ['label' => 'Réserver']);
     }
 
@@ -29,6 +37,7 @@ class BookingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Booking::class,
+            'forfait_options' => [],
         ]);
     }
 }

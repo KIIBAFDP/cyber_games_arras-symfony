@@ -134,4 +134,10 @@ class Computer
         $this->lastMaintenanceDate = $lastMaintenanceDate;
         return $this;
     }
+
+    public function isAvailable(): bool
+    {
+        // Implement your logic to check if the computer is available
+        return true; // Example return value
+    }
 }
