@@ -1,0 +1,14 @@
+{# filepath: /home/kiiba/Documents/Codings/cyber_games_arras/templates/password_reset/reset.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau mot de passe{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Nouveau mot de passe</h1>
+    {{ form_start(resetForm) }}
+        {{ form_row(resetForm.plainPassword) }}
+        {{ form_row(resetForm.submit) }}
+    {{ form_end(resetForm) }}
+</div>
+{% endblock %}

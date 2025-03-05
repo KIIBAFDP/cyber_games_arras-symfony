@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
 
 class RegistrationFormType extends AbstractType
 {
@@ -20,7 +21,15 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir une adresse email.',
+                    ]),
+                    new Email([
+                        'message' => 'Merci de saisir une adresse email valide.',
+                    ]),
+                ],
             ])
             ->add('pseudo', TextType::class, [
                 'attr' => ['class' => 'form-control'],
@@ -35,7 +44,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez saisir un mot de passe.',
                     ]),
                     new Length([
                         'min' => 6,

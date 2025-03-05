@@ -1,3 +1,7 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+        envelope:
+            sender: 'mathieu01mistretta@gmail.com'
+        # Désactiver l'utilisation de Messenger pour l'envoi d'emails
+        message_bus: false
