@@ -14,7 +14,8 @@
                 <th>Utilisateur</th>
                 <th>Ordinateur</th>
                 <th>Heure de début</th>
-                <th>H eure de fin</th>
+                <th>Heure de fin</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,10 +25,16 @@
                     <td>{{ booking.computer.name }}</td>
                     <td>{{ booking.startTime|date('d/m/Y H:i') }}</td>
                     <td>{{ booking.endTime|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <form method="post" action="{{ path('booking.delete', {id: booking.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ booking.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4" class="text-center">Aucune réservation pour le moment.</td>
+                    <td colspan="5" class="text-center">Aucune réservation trouvée</td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -13,85 +13,81 @@ class Booking
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
-    #[ORM\ManyToOne(targetEntity: Computer::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Computer $computer = null;
-
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $startTime = null;
 
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $endTime = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $forfait = null;
+    #[ORM\Column]
+    private ?int $duration = null;
 
-    // Add the setComputer method
-    public function setComputer(Computer $computer): self
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Computer::class)]
+    private ?Computer $computer = null;
+
+    public function getId(): ?int
     {
-        $this->computer = $computer;
-        return $this;
+        return $this->id;
     }
 
-    // Add the getComputer method
-    public function getComputer(): ?Computer
-    {
-        return $this->computer;
-    }
-
-    // Add the setUser method
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    // Add the getUser method
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    // Add the setStartTime method
-    public function setStartTime(\DateTimeInterface $startTime): self
-    {
-        $this->startTime = $startTime;
-        return $this;
-    }
-
-    // Add the getStartTime method
     public function getStartTime(): ?\DateTimeInterface
     {
         return $this->startTime;
     }
 
-    // Add the setEndTime method
-    public function setEndTime(\DateTimeInterface $endTime): self
+    public function setStartTime(\DateTimeInterface $startTime): self
     {
-        $this->endTime = $endTime;
+        $this->startTime = $startTime;
+        $this->calculateEndTime();
         return $this;
     }
 
-    // Add the getEndTime method
     public function getEndTime(): ?\DateTimeInterface
     {
         return $this->endTime;
     }
 
-    // Add the setForfait method
-    public function setForfait(string $forfait): self
+    private function calculateEndTime(): void
     {
-        $this->forfait = $forfait;
+        if ($this->startTime && $this->duration) {
+            $this->endTime = (clone $this->startTime)->modify("+{$this->duration} hours");
+        }
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): self
+    {
+        $this->duration = $duration;
+        $this->calculateEndTime();
         return $this;
     }
 
-    // Add the getForfait method
-    public function getForfait(): ?string
+    public function getUser(): ?User
     {
-        return $this->forfait;
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getComputer(): ?Computer
+    {
+        return $this->computer;
+    }
+
+    public function setComputer(?Computer $computer): self
+    {
+        $this->computer = $computer;
+        return $this;
     }
 }

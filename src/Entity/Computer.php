@@ -36,12 +36,13 @@ class Computer
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastMaintenanceDate = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->installedGames = new ArrayCollection();
     }
-
-    // Getters and setters...
 
     public function getId(): ?int
     {
@@ -139,5 +140,16 @@ class Computer
     {
         // Implement your logic to check if the computer is available
         return true; // Example return value
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+        return $this;
     }
 }

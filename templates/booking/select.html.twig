@@ -10,15 +10,17 @@
     <div class="row">
         {% for computer in computers %}
             <div class="col-md-4">
-                <div class="card mb-4">
+                <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">{{ computer.name }}</h5>
-                        <p class="card-text">Processeur: {{ computer.processor }}</p>
-                        <p class="card-text">Mémoire: {{ computer.memory }}</p>
-                        <p class="card-text">Système d'exploitation: {{ computer.os }}</p>
+                        <p class="card-text">{{ computer.description }}</p>
                         <a href="{{ path('booking.new', {id: computer.id}) }}" class="btn btn-primary">Réserver</a>
                     </div>
                 </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <p class="text-center">Aucun ordinateur disponible pour réservation.</p>
             </div>
         {% endfor %}
     </div>

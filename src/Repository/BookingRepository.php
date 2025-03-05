@@ -16,6 +16,20 @@ class BookingRepository extends ServiceEntityRepository
         parent::__construct($registry, Booking::class);
     }
 
+    /**
+     * @return Booking|null Returns a Booking object or null if no active booking is found
+     */
+    public function findActiveBookingByUser($user): ?Booking
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.user = :user')
+            ->andWhere('b.endTime > :now')
+            ->setParameter('user', $user)
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Booking[] Returns an array of Booking objects
     //     */
