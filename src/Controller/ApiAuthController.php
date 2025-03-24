@@ -13,12 +13,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class ApiAuthController extends AbstractController
 {
+    // Ce simple index permet de vérifier que le contrôleur est accessible
     #[Route('/api/auth', name: 'app_api_auth')]
-    public function index(): Response
+    public function index(): JsonResponse
     {
-        return $this->render('api_auth/index.html.twig', [
-            'controller_name' => 'ApiAuthController',
-        ]);
+        return new JsonResponse(['message' => 'API Auth endpoint']);
     }
 
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
@@ -40,7 +39,7 @@ final class ApiAuthController extends AbstractController
             return new JsonResponse(['error' => 'Invalid credentials'], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        // Pour cet exemple, on renvoie un token fictif (à remplacer par un vrai JWT si vous le souhaitez)
+        // Pour l'exemple, on renvoie un token fictif (remplacez par un vrai JWT au besoin)
         $token = base64_encode(random_bytes(30));
 
         return new JsonResponse(['token' => $token], JsonResponse::HTTP_OK);
